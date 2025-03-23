@@ -1,14 +1,13 @@
-export { default as SignUp } from './SignIn';
-export { default as MinhasAnotacoes } from './MinhasAnotacoes';
-export { default as NovaAnotacao } from './MinhasAnotacoes/Nova';
-export { default as EditarAnotacao } from './MinhasAnotacoes/Editar';
-export { default as Tarot } from './Tarot';
-export { default as CardOfDay } from './Tarot/CardOfDay';
-export { default as ThreeCards } from './Tarot/ThreeCards';
-export { default as FiveCards } from './Tarot/FiveCards';
+export { default as Companies } from './Company';
+export { default as EditCompany } from './Company/Editar';
+export { default as Estoques } from './Estoques';
+export { default as EditarAnotacao } from './Estoques/Editar';
+export { default as NovaAnotacao } from './Estoques/Nova';
 export { default as Home } from './Home';
-export { default as DesafioDoDia } from './Challenge';
-export { default as AllCards } from './Cards';
-export { default as NewCard } from './Cards/Nova';
-export { default as ActivateAccount } from './ActivateAccount';
 export { default as NotFound } from './NotFound';
+export { default as SignUp } from './SignIn';
+
+export { default as Materials } from './Materials';
+export { default as EditMaterial } from './Materials/Editar';
+export { default as NewMaterial } from './Materials/Lancar';
+

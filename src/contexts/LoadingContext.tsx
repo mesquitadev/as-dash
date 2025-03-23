@@ -1,25 +1,24 @@
-import { createContext, ReactNode, useMemo, useState } from 'react';
+import LoadingBackdrop from '@/components/ui/LoadingBackdrop';
+import React, { createContext, useState } from 'react';
 
-export type LoadingContextData = {
-  loading: boolean;
-  setLoading: (value: boolean) => void;
-};
-
-export const LoadingContext = createContext({} as LoadingContextData);
-
-type AuthContextProps = {
-  children: ReactNode;
-};
-
-export function LoadingProvider({ children }: AuthContextProps) {
-  const [loading, setLoading] = useState(false);
-
-  const updatedValue = useMemo(
-    () => ({
-      loading,
-      setLoading,
-    }),
-    [loading],
-  );
-  return <LoadingContext.Provider value={updatedValue}>{children}</LoadingContext.Provider>;
+export interface LoadingContextProps {
+  isLoading: boolean;
+  setLoading: (isLoading: boolean) => void;
 }
+
+export const LoadingContext = createContext<LoadingContextProps | undefined>(undefined);
+
+export const LoadingProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
+  const [isLoading, setIsLoading] = useState(false);
+
+  const setLoading = (loading: boolean) => {
+    setIsLoading(loading);
+  };
+
+  return (
+    <LoadingContext.Provider value={{ isLoading, setLoading }}>
+      {isLoading && <LoadingBackdrop />}
+      {children}
+    </LoadingContext.Provider>
+  );
+};

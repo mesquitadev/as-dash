@@ -1,24 +1,33 @@
+import Layout from '@/components/Layout';
+import { useOidc } from '@/oidc';
+import AccessDenied from '@/pages/common/AccessDenied';
 import React from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
-import { useAuth } from '@/hooks/useAuth';
-import Layout from '@/components/Layout';
 
-const PrivateRoute: React.FC = () => {
-  const { token } = useAuth();
+const PrivateRoute: React.FC<{ requiredPermissions?: string[] }> = ({
+  requiredPermissions = ['*'],
+}) => {
+  const { isUserLoggedIn, decodedIdToken } = useOidc();
+  const hasPermission =
+    requiredPermissions.includes('*') ||
+    requiredPermissions.some((permission) => decodedIdToken?.groups.includes(permission));
 
-  return token ? (
-    <Layout>
-      <Outlet />
-    </Layout>
+  return isUserLoggedIn ? (
+    hasPermission ? (
+      <Layout>
+        <Outlet />
+      </Layout>
+    ) : (
+      <AccessDenied />
+    )
   ) : (
     <Navigate to='/' />
   );
 };
 
 const PublicRoute: React.FC = () => {
-  const { token } = useAuth();
-
-  return token ? <Navigate to='/inicio' /> : <Outlet />;
+  const { isUserLoggedIn } = useOidc();
+  return isUserLoggedIn ? <Navigate to='/inicio' /> : <Outlet />;
 };
 
 export { PrivateRoute, PublicRoute };

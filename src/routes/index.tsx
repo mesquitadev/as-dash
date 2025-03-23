@@ -1,21 +1,6 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import {
-  ActivateAccount,
-  AllCards,
-  CardOfDay,
-  DesafioDoDia,
-  EditarAnotacao,
-  FiveCards,
-  Home,
-  MinhasAnotacoes,
-  NewCard,
-  NotFound,
-  NovaAnotacao,
-  SignUp,
-  Tarot,
-  ThreeCards,
-} from '@/pages';
-import { PublicRoute, PrivateRoute } from './Route';
+import { Home, Materials, NotFound, SignUp } from '@/pages';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { PrivateRoute, PublicRoute } from './Route';
 
 function AppRoutes() {
   return (
@@ -23,31 +8,32 @@ function AppRoutes() {
       <Routes>
         <Route element={<PublicRoute />}>
           <Route path='/' element={<SignUp />} />
-          <Route path='/ativar-conta' element={<ActivateAccount />} />
         </Route>
 
-        <Route path='/inicio' element={<PrivateRoute />}>
+        <Route
+          path='/inicio'
+          element={<PrivateRoute requiredPermissions={['/admin', '/fiscal']} />}
+        >
           <Route index element={<Home />} />
         </Route>
-        <Route path='/tarot' element={<PrivateRoute />}>
-          <Route index element={<Tarot />} />
-          <Route path='carta-do-dia' element={<CardOfDay />} />
-          <Route path='tres-cartas' element={<ThreeCards />} />
-          <Route path='cinco-cartas' element={<FiveCards />} />
-          <Route path='baralho' element={<AllCards />} />
+
+        <Route
+          path='/materiais'
+          element={<PrivateRoute requiredPermissions={['/admin', '/fiscal']} />}
+        >
+          <Route index element={<Materials />} />
         </Route>
-        <Route path='/minhas-anotacoes' element={<PrivateRoute />}>
-          <Route index element={<MinhasAnotacoes />} />
-          <Route path='nova' element={<NovaAnotacao />} />
-          <Route path='editar/:id' element={<EditarAnotacao />} />
+
+        {/* <Route path='/estoques' element={<PrivateRoute requiredPermissions={['/admin']} />}>
+          <Route index element={<Estoques />} />
+          <Route path='editar/:id' element={<EditCompany />} />
         </Route>
-        <Route path='/desafio-do-dia' element={<PrivateRoute />}>
-          <Route index element={<DesafioDoDia />} />
-        </Route>
-        <Route path='/cartas' element={<PrivateRoute />}>
-          <Route index element={<AllCards />} />
-          <Route path='nova' element={<NewCard />} />
-        </Route>
+
+        <Route path='/empresas' element={<PrivateRoute requiredPermissions={['/admin']} />}>
+          <Route index element={<Companies />} />
+          <Route path='editar/:id' element={<EditCompany />} />
+        </Route> */}
+
         <Route path='*' element={<NotFound />} />
       </Routes>
     </BrowserRouter>

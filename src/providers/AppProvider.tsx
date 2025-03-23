@@ -1,16 +1,13 @@
-import React, { PropsWithChildren } from 'react';
-
+import ErrorFallback from '@/components/ErrorBoundary';
 import { LoadingProvider } from '@/contexts/LoadingContext';
-import ErrorBoundary from '@/handlers/ErrorBoundary';
-import { AuthProvider } from '@/contexts/AuthContext';
+import React, { PropsWithChildren } from 'react';
+import { ErrorBoundary } from 'react-error-boundary';
 
 type AppProviderProps = PropsWithChildren<Record<string, unknown>>;
 
 const AppProvider: React.FC<AppProviderProps> = ({ children }) => (
-  <ErrorBoundary>
-    <LoadingProvider>
-      <AuthProvider>{children}</AuthProvider>
-    </LoadingProvider>
+  <ErrorBoundary fallback={<ErrorFallback />}>
+    <LoadingProvider>{children}</LoadingProvider>
   </ErrorBoundary>
 );
 

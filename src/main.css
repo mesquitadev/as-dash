@@ -2,17 +2,23 @@
 @tailwind components;
 @tailwind utilities;
 
-.custom-gradient-sidebar {
-  background: linear-gradient(to right, #A40B52, #3E041F);
-  background-size: 600% 100%;
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
 }
 
-/* Add this to your CSS file */
-.line-clamp-4 {
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
+/* Track */
+::-webkit-scrollbar-track {
+  background: var(--color-gray-100);
 }
 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 5px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}

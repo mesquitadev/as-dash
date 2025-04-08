@@ -1,7 +1,7 @@
 import { getOidc } from '@/oidc';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-export const baseUrl = 'http://localhost:8443/api/v1';
+export const baseUrl = 'https://api-sigma.ludolabs.rocks/api/v1';
 
 export const fetchWithAuth = async () => {
   const oidc = await getOidc();

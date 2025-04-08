@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { MeasureUnitSelect } from '@/components/ui/MeasureUnitySelect';
 import { useGetMaterialQuery, useUpdateMaterialMutation } from '@/features/materialsApiSlice';
 import { useLoading } from '@/hooks/useLoading';

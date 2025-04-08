@@ -1,66 +1,42 @@
-import Table from '@/components/Table';
+import NewTable from '@/components/ui/NewTable';
 import { useDeleteCompanyMutation, useGetCompaniesQuery } from '@/features/companiesApiSlice';
 import { useLoading } from '@/hooks/useLoading';
-import { useOidc } from '@/oidc';
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react';
 import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
+import { ColumnDef } from '@tanstack/react-table';
 import { enqueueSnackbar } from 'notistack';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import CriarEmpresa from './Criar';
 import EditarAnotacao from './Editar';
 
 const CompanyList: React.FC = () => {
-  const [page, setPage] = useState(0);
-  const [size, setSize] = useState(2);
-  const [sort, setSort] = useState('id,asc');
-  const [openEditModal, setOpenEditModal] = useState(false);
+  const [page] = useState(0);
+  const [size] = useState(2);
+  const [sort] = useState('id,asc');
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [openCreateModal, setOpenCreateModal] = useState(false);
-  const [selectedCompany, setSelectedCompany] = useState<any>(null);
+  const [selectedCompany] = useState<any>(null);
   const { setLoading } = useLoading();
   const { data, isLoading, isError } = useGetCompaniesQuery({ page, size, sort });
   const [deleteCompany] = useDeleteCompanyMutation();
-  const { decodedIdToken } = useOidc();
-  const userRoles = decodedIdToken?.groups || [];
-  const [selectedCompanyId, setSelectedCompanyId] = useState<string | null>(null);
+  const [selectedCompanyId] = useState<string | null>(null);
   const [openEditCompany, setOpenEditCompany] = useState(false);
 
   useEffect(() => {
     setLoading(isLoading);
   }, [isLoading, setLoading]);
 
-  const columns = [
-    { Header: 'ID', accessor: 'id' },
-    { Header: 'Empresa', accessor: 'name' },
-  ];
-
-  const actions = [
-    {
-      label: 'Editar',
-      onClick: (row: any) => {
-        setSelectedCompanyId(row.id);
-        setOpenEditCompany(true);
+  const columns: ColumnDef<any>[] = useMemo(
+    () => [
+      {
+        accessorKey: 'id',
+        header: () => <span className='flex w-100'>ID</span>,
+        cell: (info) => info.getValue(),
+        enableColumnFilter: false,
       },
-      roles: ['/admin'],
-    },
-    {
-      label: 'Excluir',
-      onClick: (row: any) => {
-        setSelectedCompany(row);
-        setOpenDeleteModal(true);
-      },
-      roles: ['/admin'],
-    },
-  ];
-
-  const handlePageChange = (newPage: number) => {
-    setPage(newPage);
-  };
-
-  const handlePageSizeChange = (newSize: number) => {
-    setSize(newSize);
-    setPage(0); // Reset page to 0 when page size changes
-  };
+    ],
+    [],
+  );
 
   if (isError) {
     enqueueSnackbar('Erro ao carregar dados', { variant: 'error' });
@@ -76,7 +52,7 @@ const CompanyList: React.FC = () => {
         await deleteCompany(selectedCompany.id).unwrap();
         setOpenDeleteModal(false);
       } catch (error) {
-        enqueueSnackbar(`Falha ao atualizar a empresa! Erro: ${error?.data?.message}`, {
+        enqueueSnackbar(`Falha ao atualizar a empresa! Erro: ${(error as any)?.data?.message}`, {
           variant: 'error',
         });
       }
@@ -94,20 +70,7 @@ const CompanyList: React.FC = () => {
           Cadastrar Empresa
         </button>
       </div>
-      <Table
-        columns={columns}
-        data={data?.content || []}
-        pageable={{
-          pageNumber: data?.pageable.pageNumber ?? 0,
-          pageSize: data?.pageable.pageSize ?? 10,
-          totalPages: data?.totalPages ?? 0,
-          totalElements: data?.totalElements ?? 0,
-        }}
-        onPageChange={handlePageChange}
-        onPageSizeChange={handlePageSizeChange}
-        actions={actions}
-        userRoles={userRoles}
-      />
+      <NewTable data={data?.content || []} columns={columns} />
 
       <Dialog
         open={openDeleteModal}

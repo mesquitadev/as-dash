@@ -6,7 +6,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 const EditarAnotacao = () => {
   const { id } = useParams<{ id: string }>();
-  const { control, handleSubmit, register, setValue } = useForm();
+  const { handleSubmit, register, setValue } = useForm();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
 

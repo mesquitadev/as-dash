@@ -72,7 +72,7 @@ export const materialsApiSlice = apiSlice.injectEndpoints({
     }),
     getMaterial: query<Item, number>({
       query: getItems,
-      providesTags: (result, error, id) => [{ type: 'Materials', id }],
+      providesTags: (_result, _error, id) => [{ type: 'Materials', id }],
     }),
     createMaterial: mutation<void, Item>({
       query: (data: Item) => ({
@@ -84,11 +84,11 @@ export const materialsApiSlice = apiSlice.injectEndpoints({
     }),
     updateMaterial: mutation<void, Item>({
       query: updateItem,
-      invalidatesTags: (result, error, { id }) => [{ type: 'Materials', id }],
+      invalidatesTags: (_result, _error, { id }) => [{ type: 'Materials', id }],
     }),
     deleteMaterial: mutation<void, number>({
       query: deleteItem,
-      invalidatesTags: (result, error, id) => [{ type: 'Materials', id }],
+      invalidatesTags: (_result, _error, id) => [{ type: 'Materials', id }],
     }),
   }),
 });

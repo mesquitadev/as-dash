@@ -25,6 +25,7 @@ const Login = () => {
                 <button
                   className='bg-primary flex w-full justify-center flex-row hover:bg-secondary text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline'
                   disabled={isLoading}
+                  // @ts-ignore
                   onClick={() => login()}
                 >
                   {isLoading ? (

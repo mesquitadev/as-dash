@@ -77,7 +77,7 @@ export const companiesApiSlice = apiSlice.injectEndpoints({
     }),
     getCompany: query<Company, string>({
       query: getCompany,
-      providesTags: (result, error, id) => [{ type: 'Companies', id }],
+      providesTags: (_result, _error, id) => [{ type: 'Companies', id }],
     }),
     createCompany: mutation<void, Company>({
       query: createCompany,
@@ -85,11 +85,11 @@ export const companiesApiSlice = apiSlice.injectEndpoints({
     }),
     updateCompany: mutation<void, Company>({
       query: updateCompany,
-      invalidatesTags: (result, error, { id }) => [{ type: 'Companies', id }],
+      invalidatesTags: (_result, _error, { id }) => [{ type: 'Companies', id }],
     }),
     deleteCompany: mutation<void, string>({
       query: deleteCompany,
-      invalidatesTags: (result, error, id) => [{ type: 'Companies', id }],
+      invalidatesTags: (_result, _error, id) => [{ type: 'Companies', id }],
     }),
   }),
 });

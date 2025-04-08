@@ -21,7 +21,7 @@ interface UserStock {
 }
 
 export const userStockApiSlice = apiSlice.injectEndpoints({
-  endpoints: ({ query, mutation }) => ({
+  endpoints: ({ query }) => ({
     getUserStocks: query<UserStock[], GetCompaniesParams>({
       query: () => ({
         url: `/user-stocks`,

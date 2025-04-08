@@ -36,7 +36,7 @@ interface SingleStock {
 }
 
 export const stockApiSlice = apiSlice.injectEndpoints({
-  endpoints: ({ query, mutation }) => ({
+  endpoints: ({ query }) => ({
     getStocks: query<Stock, QueryParams>({
       query: () => ({
         url: `/stock`,

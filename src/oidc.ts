@@ -18,6 +18,7 @@ export const { OidcProvider, useOidc, getOidc, withLoginEnforced } = createReact
     email: z.string(),
     name: z.string(),
     preferred_username: z.string(),
+    roles: z.array(z.string()).optional(),
     groups: z.array(z.string()).optional(),
   }),
 }));

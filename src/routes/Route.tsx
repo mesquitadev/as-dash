@@ -10,8 +10,9 @@ const PrivateRoute: React.FC<{ requiredPermissions?: string[] }> = ({
   const { isUserLoggedIn, decodedIdToken } = useOidc();
   const hasPermission =
     requiredPermissions.includes('*') ||
-    requiredPermissions.some((permission) => decodedIdToken?.groups.includes(permission));
+    requiredPermissions.some((permission) => decodedIdToken?.groups?.includes(permission));
 
+  console.log('decodedIdToken', decodedIdToken);
   return isUserLoggedIn ? (
     hasPermission ? (
       <Layout>

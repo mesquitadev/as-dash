@@ -1,8 +1,8 @@
 import { createReactOidc } from 'oidc-spa/react';
 import { z } from 'zod';
 export const { OidcProvider, useOidc, getOidc, withLoginEnforced } = createReactOidc(async () => ({
-  issuerUri: 'https://auth.ludolabs.rocks/realms/sunset-tecnologia',
-  clientId: 'ClubSunset',
+  issuerUri: 'https://auth.ludolabs.rocks/realms/grupoequatorialenergia',
+  clientId: 'equatorial',
   /**
    * Vite:  `homeUrl: import.meta.env.BASE_URL`
    * CRA:   `homeUrl: process.env.PUBLIC_URL`
@@ -20,5 +20,6 @@ export const { OidcProvider, useOidc, getOidc, withLoginEnforced } = createReact
     preferred_username: z.string(),
     roles: z.array(z.string()).optional(),
     groups: z.array(z.string()).optional(),
+    empresas: z.array(z.string()).optional(),
   }),
 }));

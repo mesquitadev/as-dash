@@ -1,7 +1,0 @@
-{
-  "Template": {
-    "TemplateName": "TESTE_VARIAVEIS",
-    "SubjectPart": "Ativar Conta",
-    "HtmlPart": "<!DOCTYPE html><html><head> <title>Exemplo de Template de Email</title></head><body> <h1>Olá,{{name}}!</h1> <p>Aqui está a sua mensagem:</p><p>{{code}}</p></body></html>"
-  }
-}

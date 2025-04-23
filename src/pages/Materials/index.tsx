@@ -119,27 +119,29 @@ const MaterialsPage: React.FC = () => {
                   </Tippy>
                 </>
               )}
-              {userRoles.includes('/master') ||
+              {/* {userRoles.includes('/master') ||
                 (userRoles.includes('/admin') && (
-                  <Tippy
-                    content={
-                      isItemAdded ? 'Remover item da Transferência' : 'Adicionar à Transferência'
-                    }
-                  >
-                    <button
-                      onClick={() => handleAddToTransfer(info.row.original)}
-                      className={`text-white bg-green-500 hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm p-2.5 text-center ml-4 ${
-                        isItemAdded ? 'text-green-600' : 'text-red-600'
-                      } hover:text-red-900`}
-                    >
-                      {isItemAdded ? (
-                        <MinusIcon className='h-5 w-5' />
-                      ) : (
-                        <PlusIcon className='h-5 w-5' />
-                      )}
-                    </button>
-                  </Tippy>
-                ))}
+                  
+                ))} */}
+
+              <Tippy
+                content={
+                  isItemAdded ? 'Remover item da Transferência' : 'Adicionar à Transferência'
+                }
+              >
+                <button
+                  onClick={() => handleAddToTransfer(info.row.original)}
+                  className={`text-white bg-green-500 hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm p-2.5 text-center ml-4 ${
+                    isItemAdded ? 'text-green-600' : 'text-red-600'
+                  } hover:text-red-900`}
+                >
+                  {isItemAdded ? (
+                    <MinusIcon className='h-5 w-5' />
+                  ) : (
+                    <PlusIcon className='h-5 w-5' />
+                  )}
+                </button>
+              </Tippy>
             </div>
           );
         },

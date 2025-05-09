@@ -1,6 +1,8 @@
 import logoEqtl from '@/assets/logo-eqtl.svg';
 import logo from '@/assets/logo-sigma.svg';
 
+import OptionMenu from '@/components/ui/OptionMenu';
+import { useTenant } from '@/hooks/useTenant';
 import { useOidc } from '@/oidc';
 import { getGreeting } from '@/utils';
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react';
@@ -113,6 +115,8 @@ const SidebarLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   const filteredLinks = links.filter((link) => hasPermission(userRoles, link.roles));
 
+  const { tenantOptions, setTenantId, tenantId } = useTenant();
+
   return (
     <div className='flex h-screen'>
       {/* Sidebar */}
@@ -204,11 +208,12 @@ const SidebarLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
         } overflow-y-auto scrollbar-thin scrollbar-thumb-rounded scrollbar-thumb-gray-500 scrollbar-track-gray-300`}
       >
         {/* Top Bar */}
-        <div className='bg-gray-100 text-white p-4 flex justify-end items-center fixed top-0 left-0 right-0'>
+        <div className='bg-gray-100 text-black p-4 flex justify-end items-center fixed top-0 left-0 right-0'>
           <div className='flex items-center space-x-4'>
             <span className='text-sm text-black'>
               {getGreeting()}, {decodedIdToken ? decodedIdToken.name : 'Usuário'}
             </span>
+            <OptionMenu options={tenantOptions} onChange={setTenantId} value={tenantId} />
           </div>
         </div>
         <div className='mt-24 px-5'>

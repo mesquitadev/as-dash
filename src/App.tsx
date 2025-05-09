@@ -5,10 +5,9 @@ import { SnackbarProvider } from 'notistack';
 import { Provider } from 'react-redux';
 import './main.css';
 import AppRoutes from './routes';
-import { setupStore } from './store';
+import { store } from './store';
 
 function App() {
-  const store = setupStore();
   return (
     <OidcProvider>
       <LoadingProvider>

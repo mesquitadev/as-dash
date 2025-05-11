@@ -3,7 +3,7 @@ import { useMemo, useState } from 'react';
 import { Calendar, ChartBar, ChartPie, Search, Users } from 'lucide-react';
 import { format } from 'date-fns';
 import { Card } from '@components/ui/card';
-import { Input } from '@components/ui/input';
+import { Input } from '@components/ui/Input';
 import StatCard from '@components/Dashboard/StatCard';
 import ChartCard from '@components/Dashboard/ChartCard';
 import BarChart from '@components/Dashboard/BarChart';
@@ -49,10 +49,6 @@ const Home = () => {
     );
   }, [searchTerm, mostSoldItemsData]);
 
-  // Calculate the total sales from the filtered data
-  const totalSales = useMemo(() => {
-    return filteredSalesData.reduce((sum, item) => sum + item.totalQuantitySold, 0);
-  }, [filteredSalesData]);
 
   return (
     <div className='min-h-screen bg-gray-50'>

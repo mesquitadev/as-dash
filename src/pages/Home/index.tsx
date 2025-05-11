@@ -2,24 +2,22 @@
 import { useMemo, useState } from 'react';
 import { Calendar, ChartBar, ChartPie, Search, Users } from 'lucide-react';
 import { format } from 'date-fns';
-import { Card } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import StatCard from '@/components/Dashboard/StatCard';
-import ChartCard from '@/components/Dashboard/ChartCard';
-import BarChart from '@/components/Dashboard/BarChart';
-import PieChart from '@/components/Dashboard/PieChart';
-import LineChart from '@/components/Dashboard/LineChart';
-import TopProductsTable from '@/components/Dashboard/TopProductsTable';
-import CategoryDistributionCard from '@/components/Dashboard/CategoryDistributionCard';
-import DashboardHeader from '@/components/Dashboard/DashboardHeader';
-import { useGetIndicadoresQuery, useGetMostSoldItemsQuery } from '@/features/indicatorsApiSlice';
-import { DateRangePicker } from '@/components/ui/DateRangePicker'
+import { Card } from '@components/ui/card';
+import { Input } from '@components/ui/input';
+import StatCard from '@components/Dashboard/StatCard';
+import ChartCard from '@components/Dashboard/ChartCard';
+import BarChart from '@components/Dashboard/BarChart';
+import PieChart from '@components/Dashboard/PieChart';
+import LineChart from '@components/Dashboard/LineChart';
+import TopProductsTable from '@components/Dashboard/TopProductsTable';
+import CategoryDistributionCard from '@components/Dashboard/CategoryDistributionCard';
+import DashboardHeader from '@components/Dashboard/DashboardHeader';
+import { useGetIndicadoresQuery, useGetMostSoldItemsQuery } from '@features/indicatorsApiSlice';
+import { DateRangePicker } from '@components/ui/DateRangePicker';
 
 const Home = () => {
   const [searchTerm, setSearchTerm] = useState('');
 
-  // const { data: mostSoldItemsData, isLoading: isLoadingMostSold } = useGetMostSoldItemsQuery({});
-  // const { data: indicadoresData, isLoading: isLoadingIndicadores } = useGetIndicadoresQuery({});
   const [startDate, setStartDate] = useState<Date>(() => {
     const today = new Date();
     return new Date(today.getFullYear(), today.getMonth(), 1);

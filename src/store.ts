@@ -7,6 +7,7 @@ import { apiSlice } from '@/services/apiSlice';
 import { Action, combineReducers, configureStore, ThunkAction } from '@reduxjs/toolkit';
 import { tenantsApiSlice } from './features/tenantsApiSlice';
 import { userStockApiSlice } from './features/userStocksApiSlice';
+import { indicadoresApiSlice } from '@/features/indicatorsApiSlice';
 
 const rootReducer = combineReducers({
   [apiSlice.reducerPath]: apiSlice.reducer,
@@ -15,6 +16,7 @@ const rootReducer = combineReducers({
   stocks: stockApiSlice.reducer,
   userStocks: userStockApiSlice.reducer,
   tenants: tenantsApiSlice.reducer,
+  indicators: indicadoresApiSlice.reducer,
   rowSelection: selectedRowsReducer,
   selectedTenant: selectedTenantReducer,
 });

@@ -9,4 +9,12 @@ export default defineConfig({
       usePolling: true,
     },
   },
+  optimizeDeps: {
+    exclude: ['react-error-boundary'],
+  },
+  build: {
+    commonjsOptions: {
+      include: [/react-error-boundary/, /node_modules/],
+    },
+  },
 });

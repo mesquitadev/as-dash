@@ -35,7 +35,7 @@ const LineChart = ({ data, maxItems = 10 }: LineChartProps) => {
   };
 
   // Preparar dados para o gráfico
-  const formattedData = chartData.map((item, index) => ({
+  const formattedData = chartData.map((item) => ({
     name: item.itemName.length > 15 ? `${item.itemName.substring(0, 12)}...` : item.itemName,
     quantidade: item.totalQuantitySold,
     category: item.abcCategory,
@@ -43,7 +43,7 @@ const LineChart = ({ data, maxItems = 10 }: LineChartProps) => {
   }));
 
   // Função para formatar o tooltip
-  const CustomTooltip = ({ active, payload, label }: any) => {
+  const CustomTooltip = ({ active, payload }: any) => {
     if (active && payload && payload.length) {
       const fullItemName = payload[0].payload.fullName;
       return (

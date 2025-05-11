@@ -28,7 +28,7 @@ const BarChart = ({ data, maxItems = 10 }: BarChartProps) => {
   }));
 
   // Função para formatar o tooltip
-  const CustomTooltip = ({ active, payload, label }: any) => {
+  const CustomTooltip = ({ active, payload }: any) => {
     if (active && payload && payload.length) {
       const fullItemName = payload[0].payload.fullName;
       return (
@@ -40,17 +40,6 @@ const BarChart = ({ data, maxItems = 10 }: BarChartProps) => {
       );
     }
     return null;
-  };
-
-  // Função para determinar a cor da barra com base na categoria ABC
-  const getBarColor = (entry: any) => {
-    const category = entry.category;
-    switch(category) {
-      case 'A': return '#8884d8';
-      case 'B': return '#82ca9d';
-      case 'C': return '#ffc658';
-      default: return '#8884d8';
-    }
   };
 
   return (

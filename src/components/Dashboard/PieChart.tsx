@@ -50,7 +50,7 @@ const PieChart = ({ data }: PieChartProps) => {
   };
 
   // Renderizar label com a porcentagem
-  const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index, name }: any) => {
+  const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, name }: any) => {
     const RADIAN = Math.PI / 180;
     const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
     const x = cx + radius * Math.cos(-midAngle * RADIAN);
@@ -84,7 +84,7 @@ const PieChart = ({ data }: PieChartProps) => {
           fill="#8884d8"
           dataKey="value"
         >
-          {chartDataWithPercent.map((entry, index) => (
+          {chartDataWithPercent.map((_, index) => (
             <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
           ))}
         </Pie>

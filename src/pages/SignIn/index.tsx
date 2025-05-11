@@ -15,7 +15,7 @@ const Login = () => {
           >
             <div className='w-full px-10 text-center'>
               <p className='text-sm'>Seja Bem vindo ao</p>
-              <h1 className='text-3xl font-bold'>SIGMA</h1>
+              <h1 className='text-3xl font-bold'>MacrOS | Clubium </h1>
             </div>
           </div>
 

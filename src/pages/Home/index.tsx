@@ -14,6 +14,8 @@ import CategoryDistributionCard from '@components/Dashboard/CategoryDistribution
 import DashboardHeader from '@components/Dashboard/DashboardHeader';
 import { useGetIndicadoresQuery, useGetMostSoldItemsQuery } from '@features/indicatorsApiSlice';
 import { DateRangePicker } from '@components/ui/DateRangePicker';
+import SuggestedCampaignCard  from '@components/ui/SuggestedCampainCard';
+import RecommendedProductCard from '@components/ui/RecommendedSuggestionCard';
 
 const Home = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -24,15 +26,12 @@ const Home = () => {
   });
   const [endDate, setEndDate] = useState<Date>(new Date());
 
-  // Consulta usando o hook gerado pelo RTK Query
   const { data: mostSoldItemsData, isLoading: isLoadingMostSold } = useGetMostSoldItemsQuery({
     size: 10,
     sort: 'name,asc',
     startDate: startDate ? format(startDate, 'yyyy-MM-dd') : undefined,
     endDate: endDate ? format(endDate, 'yyyy-MM-dd') : undefined,
   });
-
-
   const { data: indicadoresData, isLoading: isLoadingIndicadores } = useGetIndicadoresQuery({
     size: 10,
     sort: 'name,asc',
@@ -59,7 +58,7 @@ const Home = () => {
         />
 
         {/* Filtros */}
-        <Card className='p-4'>
+        <Card className='p-4 mb-5'>
           <div className='flex flex-col lg:flex-row gap-4'>
             {/* Filtro por termo de busca */}
             <div className='relative flex-1'>
@@ -82,6 +81,30 @@ const Home = () => {
             />
           </div>
         </Card>
+
+
+        {/* Recommendations Cards - Campaigns and Products */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+          {/* Suggested Campaign Card */}
+          <SuggestedCampaignCard
+            title="Campanha de Maio: Fidelização Premium"
+            description="Ofereça vantagens exclusivas para clientes que realizarem mais de 3 compras no mês."
+            period="Maio 2025"
+            type="month"
+            potential="Potencial de aumento de 22% na recorrência"
+            action="Implementar campanha"
+          />
+
+          {/* Recommended Product Card */}
+          <RecommendedProductCard
+            title="Açaí com Nutella"
+            description="Produto com grande potencial de vendas, ideal para cross-selling com nutella ou outros acompanhamentos."
+            period="Maio 2025"
+            type="month"
+            sales="Crescimento de 28% nas últimas 2 semanas"
+            action="Ver detalhes do produto"
+          />
+        </div>
 
         {(isLoadingMostSold || isLoadingIndicadores) ? (
           <p>Carregando dados...</p>

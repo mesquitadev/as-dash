@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button } from '@/components/ui/button';
+import Button from '@/components/ui/Button1';
 import {
   Dialog,
   DialogContent,
@@ -36,7 +36,7 @@ const SignOutDialog = ({ open, onClose, onSignOut }: SignOutDialogProps) => {
           <Button variant='outline' onClick={onClose}>
             Não
           </Button>
-          <Button variant='destructive' onClick={onSignOut}>
+          <Button variant='outline' onClick={onSignOut}>
             Sim
           </Button>
         </DialogFooter>

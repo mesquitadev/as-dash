@@ -77,7 +77,6 @@ const Home = () => {
               endDate={endDate}
               onStartDateChange={setStartDate}
               onEndDateChange={setEndDate}
-              className='min-w-[300px]'
             />
           </div>
         </Card>

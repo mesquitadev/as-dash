@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { useMemo, useState } from 'react';
 import { Calendar, ChartBar, ChartPie, Search, Users } from 'lucide-react';
 import { format } from 'date-fns';
@@ -27,14 +26,10 @@ const Home = () => {
   const [endDate, setEndDate] = useState<Date>(new Date());
 
   const { data: mostSoldItemsData, isLoading: isLoadingMostSold } = useGetMostSoldItemsQuery({
-    size: 10,
-    sort: 'name,asc',
     startDate: startDate ? format(startDate, 'yyyy-MM-dd') : undefined,
     endDate: endDate ? format(endDate, 'yyyy-MM-dd') : undefined,
   });
   const { data: indicadoresData, isLoading: isLoadingIndicadores } = useGetIndicadoresQuery({
-    size: 10,
-    sort: 'name,asc',
     startDate: startDate ? format(startDate, 'yyyy-MM-dd') : undefined,
     endDate: endDate ? format(endDate, 'yyyy-MM-dd') : undefined,
   });
@@ -75,8 +70,8 @@ const Home = () => {
             <DateRangePicker
               startDate={startDate}
               endDate={endDate}
-              onStartDateChange={setStartDate}
-              onEndDateChange={setEndDate}
+              onStartDateChange={(date) => setStartDate((prev) => date ?? prev)}
+              onEndDateChange={(date) => setEndDate((prev) => date ?? prev)}
             />
           </div>
         </Card>
@@ -113,7 +108,7 @@ const Home = () => {
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6'>
               <StatCard
                 title='Total de Produtos Vendidos'
-                value={indicadoresData?.totalSales}
+                value={indicadoresData?.totalSales || 0}
                 icon={<ChartBar className='w-5 h-5' />}
               />
               <StatCard

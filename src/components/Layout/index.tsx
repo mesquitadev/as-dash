@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
 import { useTenant } from '@/hooks/useTenant';
 import { useOidc } from '@/oidc';
 import { getGreeting } from '@/utils';
+import { Cog8ToothIcon } from '@heroicons/react/24/outline';
+import React, { useEffect, useState } from 'react';
 import { RiLayoutMasonryFill } from 'react-icons/ri';
+import { useLocation } from 'react-router-dom';
+import Header from './Header';
+import Sidebar, { SidebarLinkProps } from './Sidebar';
+import SignOutDialog from './SignOutDialog';
 // import { FaList } from 'react-icons/fa';
 
-
-import { Cog8ToothIcon } from '@heroicons/react/24/outline';
-import Sidebar, { SidebarLinkProps } from './Sidebar';
-import Header from './Header';
-import SignOutDialog from './SignOutDialog';
+s
 
 // Import logos
 import logo from '@/assets/macros-logo.png';
@@ -132,10 +132,8 @@ const SidebarLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
             value={tenantId}
           />
         </Header>
-
         {/* Main Content Area */}
         <div className='mt-24 px-5'>
-          {/*<Breadcumbs />*/}
           {children}
         </div>
       </div>

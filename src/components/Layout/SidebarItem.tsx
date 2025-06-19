@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Link } from "react-router-dom";
 import { ChevronDown } from "lucide-react";
@@ -35,52 +34,83 @@ const SidebarItem = ({
 }: SidebarItemProps) => {
   if (submenu) {
     return (
-      <div>
+      <div className="relative">
         <button
           onClick={toggleSubmenu}
           className={cn(
-            "w-full font-light relative py-2.5 px-4 mb-1 transition duration-200 hover:bg-accent flex justify-between items-center rounded-lg",
+            "w-full relative py-3 px-4 transition-all duration-300",
+            "flex justify-between items-center rounded-xl group",
             isSidebarOpen ? "" : "justify-center text-center",
-            isActive && "bg-accent"
+            isActive ? "bg-white/10 text-white" : "text-white/70 hover:text-white"
           )}
         >
-          <div className="flex flex-row items-center justify-center">
-            <Icon className={cn("h-5 w-5", isSidebarOpen ? "mr-2" : "m-0")} />
-            {isSidebarOpen && <span>{label}</span>}
+          <div className="flex items-center">
+            <div className={cn(
+              "rounded-lg transition-all duration-300 relative",
+              isActive ? "text-white" : "text-white/70 group-hover:text-white"
+            )}>
+              <Icon className="h-5 w-5" />
+              {isActive && (
+                <div className="absolute inset-0 bg-white/10 rounded-lg blur-sm" />
+              )}
+            </div>
+            {isSidebarOpen && (
+              <span className={cn(
+                "ml-3 text-sm font-medium transition-colors duration-300",
+                isActive ? "text-white" : "text-white/70 group-hover:text-white"
+              )}>
+                {label}
+              </span>
+            )}
           </div>
           {isSidebarOpen && (
-            <span
-              className={cn(
-                "transform transition-transform duration-200",
-                isSubmenuOpen ? "rotate-180" : ""
-              )}
-            >
-              <ChevronDown className="h-4 w-4" />
-            </span>
+            <ChevronDown className={cn(
+              "h-4 w-4 transition-transform duration-300",
+              isSubmenuOpen ? "rotate-180" : "",
+              isActive ? "text-white" : "text-white/70 group-hover:text-white"
+            )} />
           )}
         </button>
-        <ul
-          className={cn(
-            "bg-muted rounded-md transition-all duration-300 ease-in-out overflow-hidden",
-            isSubmenuOpen ? "max-h-96" : "max-h-0"
-          )}
-        >
-          {submenu.map((subitem) => (
-            <li key={subitem.to}>
-              <Link
-                to={subitem.to}
-                className={cn(
-                  "relative py-2.5 px-2 transition duration-200 hover:bg-accent/50 flex items-center",
-                  isSidebarOpen ? "" : "justify-center text-center",
-                  subitem.isActive ? "bg-accent/70" : ""
-                )}
-              >
-                <subitem.icon className="ml-2 mr-2 h-4 w-4" />
-                {isSidebarOpen && <span>{subitem.label}</span>}
-              </Link>
-            </li>
-          ))}
-        </ul>
+
+        <div className={cn(
+          "overflow-hidden transition-all duration-300 ease-in-out pl-3",
+          isSubmenuOpen ? "max-h-[400px] opacity-100" : "max-h-0 opacity-0"
+        )}>
+          <ul className={cn(
+            "space-y-1 mt-1",
+            isSidebarOpen ? "pl-4" : "pl-0"
+          )}>
+            {submenu.map((subitem) => (
+              <li key={subitem.to}>
+                <Link
+                  to={subitem.to}
+                  className={cn(
+                    "flex items-center py-2 px-3 rounded-lg transition-all duration-200 group/item",
+                    isSidebarOpen ? "" : "justify-center",
+                    subitem.isActive
+                      ? "bg-white/10 text-white"
+                      : "text-white/60 hover:text-white hover:bg-white/5"
+                  )}
+                >
+                  <div className={cn(
+                    "rounded-lg transition-colors duration-200",
+                    subitem.isActive ? "text-white" : "text-white/60 group-hover/item:text-white"
+                  )}>
+                    <subitem.icon className="h-4 w-4" />
+                  </div>
+                  {isSidebarOpen && (
+                    <span className={cn(
+                      "ml-3 text-sm transition-colors duration-200",
+                      subitem.isActive ? "text-white" : "text-white/60 group-hover/item:text-white"
+                    )}>
+                      {subitem.label}
+                    </span>
+                  )}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     );
   }
@@ -89,15 +119,33 @@ const SidebarItem = ({
     <Link
       to={to}
       className={cn(
-        "font-light relative py-2.5 px-4 mb-1 transition duration-200 hover:bg-accent flex items-center rounded-lg",
-        isSidebarOpen ? "" : "justify-center text-center",
-        isActive && "bg-accent"
+        "flex items-center py-3 px-4 rounded-xl transition-all duration-300 group",
+        isSidebarOpen ? "" : "justify-center",
+        isActive
+          ? "bg-white/10 text-white"
+          : "text-white/70 hover:text-white hover:bg-white/5"
       )}
     >
-      <Icon className={cn("h-5 w-5", isSidebarOpen ? "mr-2" : "m-0")} />
-      {isSidebarOpen && <span>{label}</span>}
+      <div className={cn(
+        "rounded-lg transition-colors duration-300 relative",
+        isActive ? "text-white" : "text-white/70 group-hover:text-white"
+      )}>
+        <Icon className="h-5 w-5" />
+        {isActive && (
+          <div className="absolute inset-0 bg-white/10 rounded-lg blur-sm" />
+        )}
+      </div>
+      {isSidebarOpen && (
+        <span className={cn(
+          "ml-3 text-sm font-medium transition-colors duration-300",
+          isActive ? "text-white" : "text-white/70 group-hover:text-white"
+        )}>
+          {label}
+        </span>
+      )}
     </Link>
   );
 };
 
 export default SidebarItem;
+

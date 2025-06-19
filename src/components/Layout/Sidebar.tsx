@@ -20,22 +20,20 @@ interface SidebarProps {
   isSubmenuOpen: { [key: string]: boolean };
   toggleSubmenu: (menu: string) => void;
   logo: string;
-  footerLogo?: string;
   version?: string;
   developer?: string;
 }
 
 const Sidebar = ({
-                   links,
-                   userRoles,
-                   isSidebarOpen,
-                   isSubmenuOpen,
-                   toggleSubmenu,
-                   logo,
-                   footerLogo,
-                   version,
-                   developer,
-                 }: SidebarProps) => {
+  links,
+  userRoles,
+  isSidebarOpen,
+  isSubmenuOpen,
+  toggleSubmenu,
+  logo,
+  version,
+  developer,
+}: SidebarProps) => {
   const location = useLocation();
 
   const hasPermission = (userRoles: string[], requiredRoles: string[]): boolean => {
@@ -47,62 +45,42 @@ const Sidebar = ({
   return (
     <div
       className={cn(
-        'bg-primary text-sidebar-foreground h-full fixed text-white',
+        'bg-gradient-to-b from-[#1a1c2e] to-[#16162a] text-white',
+        'h-full fixed space-y-6 py-4 transition-all duration-200 flex flex-col z-50',
         isSidebarOpen ? 'w-64' : 'w-20',
-        'space-y-6 py-4 transition-all duration-200 flex flex-col z-20 overflow-hidden',
       )}
     >
       <div className='flex py-2 mx-4 my-2 justify-center items-center'>
-        <img src={logo} alt='Logo' className={cn('h-20', isSidebarOpen ? 'w-auto' : 'w-5 ')} />
-      </div>
-      <div className='mx-5'>
-        <hr className='border-sidebar-border' />
+        <img src={logo} alt='Logo' className={cn('h-12', isSidebarOpen ? 'w-auto' : 'w-5')} />
       </div>
 
-      <ScrollArea className='h-full flex-1'>
-        <nav className='pt-2 mx-2'>
-          {filteredLinks.map((link) => {
-            const isActive = location.pathname.startsWith(link.startsWith);
-
-            // Process submenu items if they exist
-            if (link.submenu) {
-              link.submenu = link.submenu
-                .filter((sublink) => hasPermission(userRoles, sublink.roles))
-                .map((sublink) => ({
-                  ...sublink,
-                  isActive: location.pathname.startsWith(sublink.to),
-                }));
-            }
-
-            return (
-              <SidebarItem
-                key={link.label}
-                icon={link.icon}
-                label={link.label}
-                to={link.to}
-                isActive={isActive}
-                isSidebarOpen={isSidebarOpen}
-                submenu={link.submenu}
-                isSubmenuOpen={isSubmenuOpen[link.label] || false}
-                toggleSubmenu={() => toggleSubmenu(link.label)}
-              />
-            );
-          })}
+      <ScrollArea className='h-full flex-1 px-3'>
+        <nav className='space-y-1'>
+          {filteredLinks.map((link) => (
+            <SidebarItem
+              key={link.label}
+              icon={link.icon}
+              label={link.label}
+              to={link.to}
+              isActive={location.pathname.startsWith(link.startsWith)}
+              isSidebarOpen={isSidebarOpen}
+              submenu={link.submenu}
+              isSubmenuOpen={isSubmenuOpen[link.label] || false}
+              toggleSubmenu={() => toggleSubmenu(link.label)}
+            />
+          ))}
         </nav>
       </ScrollArea>
 
-      <footer className='p-1 mt-auto'>
-        <div className='py-2 flex-col justify-center items-center hidden sm:flex'>
-          {footerLogo && (
-            <img src={footerLogo} alt='Footer Logo' className='hidden sm:block max-h-10' />
-          )}
-          {version && <div className='text-sm font-semibold text-sidebar-foreground'>{version}</div>}
-          {developer && <div className='text-xs text-sidebar-foreground/70'>{developer}</div>}
+      <footer className='px-4 py-3 border-t border-white/10'>
+        <div className='flex-col justify-center items-center hidden sm:flex space-y-1'>
+          <div className='text-xs font-medium text-white/70'>{version}</div>
+          <div className='text-xs text-white/50'>{developer}</div>
         </div>
       </footer>
-
     </div>
   );
 };
 
 export default Sidebar;
+

@@ -1,4 +1,5 @@
 import { apiSlice } from '@/services/apiSlice';
+import { ApiTags } from './types';
 
 interface QueryParams {
   page?: number;
@@ -30,28 +31,17 @@ interface Stock {
   empty: boolean;
 }
 
-interface SingleStock {
-  id: string;
-  name: string;
-}
-
-export const stockApiSlice = apiSlice.injectEndpoints({
-  endpoints: ({ query }) => ({
-    getStocks: query<Stock, QueryParams>({
-      query: () => ({
-        url: `/stock`,
+export const stockApi = apiSlice.injectEndpoints({
+  endpoints: (builder) => ({
+    getStocks: builder.query<Stock, QueryParams>({
+      query: (params) => ({
+        url: '/stocks',
         method: 'GET',
+        params,
       }),
-      providesTags: ['Stocks'],
-    }),
-
-    getStockById: query<SingleStock, number>({
-      query: (stockId) => ({
-        url: `/stock/${stockId}`,
-        method: 'GET',
-      }),
+      providesTags: [{ type: 'Stocks' as ApiTags, id: 'LIST' }],
     }),
   }),
 });
 
-export const { useGetStocksQuery, useGetStockByIdQuery } = stockApiSlice;
+export const { useGetStocksQuery } = stockApi;

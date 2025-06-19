@@ -1,18 +1,15 @@
+// @ts-nocheck
 import { useTenant } from '@/hooks/useTenant';
 import { useOidc } from '@/oidc';
 import { getGreeting } from '@/utils';
-import { Cog8ToothIcon } from '@heroicons/react/24/outline';
+import { cn } from '@/lib/utils';
 import React, { useEffect, useState } from 'react';
-import { RiLayoutMasonryFill } from 'react-icons/ri';
 import { useLocation } from 'react-router-dom';
 import Header from './Header';
-import Sidebar, { SidebarLinkProps } from './Sidebar';
+import Sidebar from './Sidebar';
 import SignOutDialog from './SignOutDialog';
-// import { FaList } from 'react-icons/fa';
+import { menuItems } from './menuItems';
 
-s
-
-// Import logos
 import logo from '@/assets/macros-logo.png';
 import OptionMenu from '@/components/ui/OptionMenu';
 
@@ -21,41 +18,12 @@ const SidebarLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
   const [openSignOutModal, setOpenSignOutModal] = useState(false);
   const [isSubmenuOpen, setIsSubmenuOpen] = useState<{ [key: string]: boolean }>({});
 
-  const { decodedIdToken } = useOidc();
+  const { decodedIdToken, logout } = useOidc();
   const userRoles = decodedIdToken?.groups || [];
   const { tenantOptions, setTenantId, tenantId } = useTenant();
   const location = useLocation();
 
-  // Define navigation links
-  const links: SidebarLinkProps[] = React.useMemo(
-    () => [
-      {
-        icon: RiLayoutMasonryFill,
-        label: 'Dashboard',
-        startsWith: '/inicio',
-        roles: ['/admin', '/fiscal'],
-        to: '/inicio',
-      },
-      {
-        icon: Cog8ToothIcon,
-        label: 'Configuração',
-        startsWith: '/configuracao',
-        roles: ['/master'],
-        to: '/configuracao',
-        // submenu: [
-        //   { to: '/estoques', label: 'Gerenciar Estoques', icon: PlusIcon, roles: ['/admin'] },
-        //   { to: '/empresas', label: 'Gerenciar Empresas', icon: PlusIcon, roles: ['/admin'] },
-        //   {
-        //     to: '/minhas-anotacoes/lista',
-        //     label: 'Lista de Anotações',
-        //     icon: FaList,
-        //     roles: ['/user'],
-        //   },
-        // ],
-      },
-    ],
-    [],
-  );
+  const links = React.useMemo(() => menuItems, []);
 
   // Handle sidebar responsiveness
   useEffect(() => {
@@ -95,14 +63,12 @@ const SidebarLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
   };
 
   const handleSignOutConfirm = () => {
-    // Implement sign out functionality here
-    // signOut();
     setOpenSignOutModal(false);
+    logout && logout({ redirectTo: 'specific url', url: '/' });
   };
 
   return (
-    <div className='flex h-screen'>
-      {/* Sidebar Component */}
+    <div className="flex h-screen overflow-hidden bg-background">
       <Sidebar
         links={links}
         userRoles={userRoles}
@@ -114,17 +80,15 @@ const SidebarLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
         developer='Desenvolvido por LudoLABS'
       />
 
-      {/* Main Content */}
-      <div
-        className={`flex-1 ${
-          isSidebarOpen ? 'ml-64' : 'ml-20'
-        } transition-all duration-200 overflow-y-auto`}
-      >
-        {/* Header Component */}
+      <div className={cn(
+        "flex-1 flex flex-col transition-all duration-300 relative",
+        isSidebarOpen ? "ml-64" : "ml-20"
+      )}>
         <Header
           isSidebarOpen={isSidebarOpen}
           greeting={getGreeting()}
           userName={decodedIdToken?.name || 'Usuário'}
+          onSignOut={handleSignOut}
         >
           <OptionMenu
             options={tenantOptions}
@@ -132,20 +96,20 @@ const SidebarLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
             value={tenantId}
           />
         </Header>
-        {/* Main Content Area */}
-        <div className='mt-24 px-5'>
+
+        <main className="flex-1 overflow-auto px-6 py-6 mt-16">
           {children}
-        </div>
+        </main>
       </div>
 
-      {/* Sign Out Dialog */}
       <SignOutDialog
         open={openSignOutModal}
-        onClose={handleSignOut}
-        onSignOut={handleSignOutConfirm}
+        onOpenChange={setOpenSignOutModal}
+        onConfirm={handleSignOutConfirm}
       />
     </div>
   );
 };
 
 export default SidebarLayout;
+

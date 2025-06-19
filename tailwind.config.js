@@ -4,8 +4,13 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: '#093576',
-        secondary: '#07329E',
+        border: "hsl(var(--border))",
+        input: "hsl(var(--input))",
+        ring: "hsl(var(--ring))",
+        background: "hsl(var(--background))",
+        foreground: "hsl(var(--foreground))",
+        primary: 'rgba(255, 199, 14, 1)',
+        secondary: 'rgba(113, 0, 109, 1)',
         tertiary: '#130976',
         'white-opacity': 'rgba(255, 255, 255, 0.35)',
         'blue-custom': '#EBF2FF',
@@ -18,8 +23,8 @@ export default {
         'custom-gray-light': '#F1F1F1',
         'gradient-gray-from': 'rgba(33, 34, 41, 1)',
         'gradient-gray-to': 'rgba(33, 37, 41, 1)',
-        'gradient-primary-start': 'rgba(8, 159, 174, 1)',
-        'gradient-primary-end': 'rgba(7, 125, 137, 1)',
+        'gradient-primary-start': 'rgba(255, 199, 14, 1)',
+        'gradient-primary-end': 'rgba(113, 0, 109, 1)',
       },
       fontFamily: {
         playfair: ['Playfair Display', 'serif'],

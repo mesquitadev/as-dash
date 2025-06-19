@@ -1,119 +1,106 @@
-
-import { LineChart as RechartsLineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import { useState, useMemo } from 'react';
+import { Line, LineChart as RechartsLineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
+import { useMemo } from 'react';
+import { Card } from '../ui/card';
 
 interface DataItem {
   itemName: string;
   totalQuantitySold: number;
-  abcCategory: string;
 }
 
 interface LineChartProps {
   data: DataItem[];
-  maxItems?: number;
+  title?: string;
+  subtitle?: string;
+  className?: string;
 }
 
-const LineChart = ({ data, maxItems = 10 }: LineChartProps) => {
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+const CustomTooltip = ({ active, payload, label }: any) => {
+  if (active && payload && payload.length) {
+    return (
+      <div className="bg-white dark:bg-gray-800 p-3 rounded-lg shadow-lg border border-gray-100 dark:border-gray-700">
+        <p className="text-sm text-gray-600 dark:text-gray-300">{label}</p>
+        <p className="text-lg font-bold text-primary">
+          {payload[0].value}
+        </p>
+      </div>
+    );
+  }
+  return null;
+};
 
-  // Ordenar e filtrar dados
+const LineChart = ({ data, title, subtitle, className }: LineChartProps) => {
   const chartData = useMemo(() => {
-    // Filtrar por categoria, se selecionada
-    const filteredData = selectedCategory 
-      ? data.filter(item => item.abcCategory === selectedCategory)
-      : data;
-
-    // Ordenar por quantidade vendida (decrescente)
-    const sortedData = [...filteredData].sort((a, b) => b.totalQuantitySold - a.totalQuantitySold);
-    
-    // Limitar aos primeiros N itens
-    return sortedData.slice(0, maxItems);
-  }, [data, selectedCategory, maxItems]);
-
-  const handleCategoryClick = (category: string) => {
-    setSelectedCategory(prev => prev === category ? null : category);
-  };
-
-  // Preparar dados para o gráfico
-  const formattedData = chartData.map((item) => ({
-    name: item.itemName.length > 15 ? `${item.itemName.substring(0, 12)}...` : item.itemName,
-    quantidade: item.totalQuantitySold,
-    category: item.abcCategory,
-    fullName: item.itemName,
-  }));
-
-  // Função para formatar o tooltip
-  const CustomTooltip = ({ active, payload }: any) => {
-    if (active && payload && payload.length) {
-      const fullItemName = payload[0].payload.fullName;
-      return (
-        <div className="bg-white p-3 border rounded shadow-md">
-          <p className="font-semibold">{fullItemName}</p>
-          <p>Quantidade: <span className="font-semibold">{payload[0].value}</span></p>
-          <p>Categoria ABC: <span className="font-semibold">{payload[0].payload.category}</span></p>
-        </div>
-      );
-    }
-    return null;
-  };
+    return data.map(item => ({
+      name: item.itemName,
+      value: item.totalQuantitySold
+    }));
+  }, [data]);
 
   return (
-    <div className="w-full">
-      <div className="mb-4 flex gap-2">
-        <button
-          onClick={() => setSelectedCategory(null)}
-          className={`px-3 py-1 text-sm rounded-md ${!selectedCategory ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
-        >
-          Todos
-        </button>
-        <button
-          onClick={() => handleCategoryClick('A')}
-          className={`px-3 py-1 text-sm rounded-md ${selectedCategory === 'A' ? 'bg-purple-500 text-white' : 'bg-gray-200'}`}
-        >
-          Categoria A
-        </button>
-        <button
-          onClick={() => handleCategoryClick('B')}
-          className={`px-3 py-1 text-sm rounded-md ${selectedCategory === 'B' ? 'bg-green-500 text-white' : 'bg-gray-200'}`}
-        >
-          Categoria B
-        </button>
-        <button
-          onClick={() => handleCategoryClick('C')}
-          className={`px-3 py-1 text-sm rounded-md ${selectedCategory === 'C' ? 'bg-yellow-500 text-white' : 'bg-gray-200'}`}
-        >
-          Categoria C
-        </button>
-      </div>
+    <Card className={className}>
+      {(title || subtitle) && (
+        <div className="p-6 pb-0">
+          {title && <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{title}</h3>}
+          {subtitle && <p className="text-sm text-gray-500 dark:text-gray-400">{subtitle}</p>}
+        </div>
+      )}
 
-      <ResponsiveContainer width="100%" height={350}>
-        <RechartsLineChart
-          data={formattedData}
-          margin={{ top: 5, right: 30, left: 20, bottom: 70 }}
-        >
-          <CartesianGrid strokeDasharray="3 3" vertical={false} />
-          <XAxis 
-            dataKey="name" 
-            angle={-45} 
-            textAnchor="end"
-            height={70}
-            interval={0}
-            tick={{ fontSize: 12 }}
-          />
-          <YAxis />
-          <Tooltip content={<CustomTooltip />} />
-          <Legend />
-          <Line 
-            type="monotone" 
-            dataKey="quantidade" 
-            name="Quantidade Vendida"
-            stroke="#8884d8" 
-            strokeWidth={2}
-            activeDot={{ r: 6 }} 
-          />
-        </RechartsLineChart>
-      </ResponsiveContainer>
-    </div>
+      <div className="p-6 h-[300px]">
+        <ResponsiveContainer width="100%" height="100%">
+          <RechartsLineChart
+            data={chartData}
+            margin={{ top: 5, right: 10, left: 10, bottom: 5 }}
+            onMouseMove={(e: any) => {
+              if (e && e.activePayload) {
+                // Do something with e.activePayload[0].value if needed
+              }
+            }}
+            onMouseLeave={() => {
+              // Handle mouse leave if needed
+            }}
+          >
+            <defs>
+              <linearGradient id="colorGradient" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="rgb(147, 51, 234)" stopOpacity={0.3}/>
+                <stop offset="95%" stopColor="rgb(147, 51, 234)" stopOpacity={0}/>
+              </linearGradient>
+            </defs>
+
+            <XAxis
+              dataKey="name"
+              axisLine={false}
+              tickLine={false}
+              tick={{ fill: '#6B7280', fontSize: 12 }}
+              dy={10}
+            />
+
+            <YAxis
+              axisLine={false}
+              tickLine={false}
+              tick={{ fill: '#6B7280', fontSize: 12 }}
+              dx={-10}
+            />
+
+            <Tooltip content={<CustomTooltip />} />
+
+            <Line
+              type="monotone"
+              dataKey="value"
+              stroke="rgb(147, 51, 234)"
+              strokeWidth={3}
+              dot={false}
+              activeDot={{
+                r: 6,
+                stroke: 'rgb(147, 51, 234)',
+                strokeWidth: 2,
+                fill: 'white'
+              }}
+              fill="url(#colorGradient)"
+            />
+          </RechartsLineChart>
+        </ResponsiveContainer>
+      </div>
+    </Card>
   );
 };
 

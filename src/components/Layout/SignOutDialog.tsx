@@ -12,13 +12,13 @@ import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 
 interface SignOutDialogProps {
   open: boolean;
-  onClose: () => void;
-  onSignOut: () => void;
+  onOpenChange: (value: boolean) => void;
+  onConfirm: () => void;
 }
 
-const SignOutDialog = ({ open, onClose, onSignOut }: SignOutDialogProps) => {
+const SignOutDialog = ({ open, onOpenChange, onConfirm }: SignOutDialogProps) => {
   return (
-    <Dialog open={open} onOpenChange={onClose}>
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className='sm:max-w-[425px]'>
         <DialogHeader>
           <div className='flex items-center gap-4'>
@@ -33,10 +33,10 @@ const SignOutDialog = ({ open, onClose, onSignOut }: SignOutDialogProps) => {
           </div>
         </DialogHeader>
         <DialogFooter className='flex justify-end gap-2 sm:justify-end'>
-          <Button variant='outline' onClick={onClose}>
+          <Button variant='outline' onClick={() => onOpenChange(false)}>
             Não
           </Button>
-          <Button variant='outline' onClick={onSignOut}>
+          <Button variant='outline' onClick={onConfirm}>
             Sim
           </Button>
         </DialogFooter>
@@ -46,3 +46,4 @@ const SignOutDialog = ({ open, onClose, onSignOut }: SignOutDialogProps) => {
 };
 
 export default SignOutDialog;
+

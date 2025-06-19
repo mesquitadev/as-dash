@@ -1,4 +1,5 @@
 import { apiSlice } from '@/services/apiSlice';
+import { ApiTags } from './types';
 
 interface GetCompaniesParams {
   page?: number;
@@ -20,16 +21,17 @@ interface UserStock {
   items: UserStockItem[];
 }
 
-export const userStockApiSlice = apiSlice.injectEndpoints({
-  endpoints: ({ query }) => ({
-    getUserStocks: query<UserStock[], GetCompaniesParams>({
-      query: () => ({
-        url: `/user-stocks`,
+export const userStocksApi = apiSlice.injectEndpoints({
+  endpoints: (builder) => ({
+    getUserStocks: builder.query<UserStock[], GetCompaniesParams>({
+      query: (params) => ({
+        url: '/user-stocks',
         method: 'GET',
+        params,
       }),
-      providesTags: ['UserStocks'],
+      providesTags: [{ type: 'UserStocks' as ApiTags, id: 'LIST' }],
     }),
   }),
 });
 
-export const { useGetUserStocksQuery } = userStockApiSlice;
+export const { useGetUserStocksQuery } = userStocksApi;

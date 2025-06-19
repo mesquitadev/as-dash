@@ -1,6 +1,6 @@
 import { getOidc } from '@/oidc';
-import { RootState } from '@/store'; // Importa o tipo RootState para acessar o estado global
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { ApiTags } from '@/features/types';
 
 export const baseUrl = 'https://api.ludolabs.rocks/api/v1';
 
@@ -15,23 +15,15 @@ export const fetchWithAuth = async () => {
 export const apiSlice = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({
-    baseUrl,
-    prepareHeaders: async (headers, { getState }) => {
-      const token = await fetchWithAuth();
+    baseUrl: import.meta.env.VITE_API_URL,
+    prepareHeaders: (headers) => {
+      const token = localStorage.getItem('@App:token');
       if (token) {
-        headers.set('Authorization', `Bearer ${token}`);
+        headers.set('authorization', `Bearer ${token}`);
       }
-
-      // Obter o tenantId do Redux usando getState
-      const state = getState() as RootState;
-      const tenantId = state.selectedTenant?.tenantId;
-      if (tenantId) {
-        headers.set('X-Tenant-ID', tenantId);
-      }
-
       return headers;
     },
   }),
-  tagTypes: ['Companies', 'Materials', 'UserStocks', 'Stocks', 'Tenants'],
+  tagTypes: ['Companies', 'Tenants', 'Materials', 'PDV', 'Points', 'Stocks', 'UserStocks'] as ApiTags[],
   endpoints: () => ({}),
 });

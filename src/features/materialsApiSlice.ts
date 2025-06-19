@@ -1,6 +1,7 @@
 import { apiSlice } from '@/services/apiSlice';
+import { ApiTags } from './types';
 
-interface Item {
+export interface Item {
   id: number;
   name: string;
   quantity: number;
@@ -10,7 +11,7 @@ interface Item {
 }
 
 interface CompaniesResponse {
-  content: Item[];
+  data: Item[];
   pageable: {
     sort: {
       empty: boolean;
@@ -42,61 +43,52 @@ interface GetCompaniesParams {
   page?: number;
   size?: number;
   sort?: string;
-  stockId?: string | null;
+  tenantId?: string;
+  search?: string;
 }
 
-const itemsEndpoint = (id: number) => `/items/${id}`;
-
-function getItems(id: number) {
-  return { url: itemsEndpoint(id), method: 'GET' };
-}
-
-function updateItem(data: Item) {
-  return { url: itemsEndpoint(data.id), method: 'PUT', body: data };
-}
-
-function deleteItem(id: number) {
-  return { url: itemsEndpoint(id), method: 'DELETE' };
-}
-
-export const materialsApiSlice = apiSlice.injectEndpoints({
-  endpoints: ({ query, mutation }) => ({
-    getMaterials: query<CompaniesResponse, GetCompaniesParams>({
-      query: ({ page = 0, size = 50, sort = 'id,asc', stockId = null }) => {
-        const queryString = `stock/items/${stockId}?page=${page}&size=${size}&sort=${sort}`;
-
-        return queryString;
-      },
-      providesTags: (result) =>
-        result ? result.content.map(({ id }) => ({ type: 'Materials', id })) : ['Materials'],
-    }),
-    getMaterial: query<Item, number>({
-      query: getItems,
-      providesTags: (_result, _error, id) => [{ type: 'Materials', id }],
-    }),
-    createMaterial: mutation<void, Item>({
-      query: (data: Item) => ({
-        url: '/items',
-        method: 'POST',
-        body: data,
+export const materialsApi = apiSlice.injectEndpoints({
+  endpoints: (builder) => ({
+    getMaterials: builder.query<CompaniesResponse, GetCompaniesParams>({
+      query: ({ page, tenantId, search }) => ({
+        url: `/materials?page=${page}&tenant_id=${tenantId}${search ? `&search=${search}` : ''}`,
+        method: 'GET',
       }),
-      invalidatesTags: ['Materials'],
+      providesTags: (result) =>
+        result
+          ? [
+              ...result.data.map(({ id }) => ({ type: 'Materials' as ApiTags, id })),
+              { type: 'Materials' as ApiTags, id: 'LIST' },
+            ]
+          : [{ type: 'Materials' as ApiTags, id: 'LIST' }],
     }),
-    updateMaterial: mutation<void, Item>({
-      query: updateItem,
-      invalidatesTags: (_result, _error, { id }) => [{ type: 'Materials', id }],
+    getMaterialById: builder.query<Item, number>({
+      query: (id) => `/materials/${id}`,
+      providesTags: (_result, _error, id) => [{ type: 'Materials' as ApiTags, id }],
     }),
-    deleteMaterial: mutation<void, number>({
-      query: deleteItem,
-      invalidatesTags: (_result, _error, id) => [{ type: 'Materials', id }],
+    createMaterial: builder.mutation<void, Item>({
+      query: (material) => ({
+        url: '/materials',
+        method: 'POST',
+        body: material,
+      }),
+      invalidatesTags: [{ type: 'Materials' as ApiTags, id: 'LIST' }],
+    }),
+    updateMaterial: builder.mutation<void, Item>({
+      query: ({ id, ...patch }) => ({
+        url: `/materials/${id}`,
+        method: 'PUT',
+        body: patch,
+      }),
+      invalidatesTags: (_result, _error, { id }) => [{ type: 'Materials' as ApiTags, id }],
+    }),
+    deleteMaterial: builder.mutation<void, number>({
+      query: (id) => ({
+        url: `/materials/${id}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: (_result, _error, id) => [{ type: 'Materials' as ApiTags, id }],
     }),
   }),
 });
 
-export const {
-  useGetMaterialsQuery,
-  useGetMaterialQuery,
-  useCreateMaterialMutation,
-  useUpdateMaterialMutation,
-  useDeleteMaterialMutation,
-} = materialsApiSlice;
